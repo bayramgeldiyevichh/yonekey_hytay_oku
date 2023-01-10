@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <title>CRM Webinar</title>
+  <link rel="shortcut icon" id="favicon" href="https://yonekey.com/uploads/company/favicon.png">
+<link rel="apple-touch-icon”" id="favicon-apple-touch-icon" href="https://yonekey.com/uploads/company/favicon.png">
+<link rel="stylesheet" type="text/css" id="reset-css" href="https://yonekey.com/assets/css/reset.min.css?v=2.9.4">
+<link rel="stylesheet" type="text/css" id="roboto-css" href="https://yonekey.com/assets/plugins/roboto/roboto.css?v=2.9.4">
+<link rel="stylesheet" type="text/css" id="bootstrap-css" href="https://yonekey.com/assets/plugins/bootstrap/css/bootstrap.min.css?v=2.9.4">
+<link rel="stylesheet" type="text/css" id="datetimepicker-css" href="https://yonekey.com/assets/plugins/datetimepicker/jquery.datetimepicker.min.css?v=2.9.4">
+<link rel="stylesheet" type="text/css" id="colorpicker-css" href="https://yonekey.com/assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css?v=2.9.4">
+<link rel="stylesheet" type="text/css" id="fontawesome-css" href="https://yonekey.com/assets/plugins/font-awesome/css/font-awesome.min.css?v=2.9.4">
+<link rel="stylesheet" type="text/css" id="bootstrap-select-css" href="https://yonekey.com/assets/plugins/bootstrap-select/css/bootstrap-select.min.css?v=2.9.4">
+<link rel="stylesheet" type="text/css" id="forms-css" href="https://yonekey.com/assets/css/forms.min.css?v=2.9.4">
+    <script>
+        var cfh_popover_templates = {};
+        window.addEventListener('load',function(){
+            custom_fields_hyperlink();
+        });
+    </script>
+        <script>
+        function custom_fields_hyperlink(){
+         var cf_hyperlink = $('body').find('.cf-hyperlink');
+         if(cf_hyperlink.length){
+           $.each(cf_hyperlink,function(){
+            var cfh_wrapper = $(this);
+            if(!cfh_wrapper.hasClass('cfh-initialized')) {
+                var cfh_field_to = cfh_wrapper.attr('data-fieldto');
+                var cfh_field_id = cfh_wrapper.attr('data-field-id');
+                var textEl = $('body').find('#custom_fields_'+cfh_field_to+'_'+cfh_field_id+'_popover');
+                var hiddenField = $("#custom_fields\\\["+cfh_field_to+"\\\]\\\["+cfh_field_id+"\\\]");
+                var cfh_value = cfh_wrapper.attr('data-value');
+                hiddenField.val(cfh_value);
+
+                if($(hiddenField.val()).html() != ''){
+                    textEl.html($(hiddenField.val()).html());
+                }
+                var cfh_field_name = cfh_wrapper.attr('data-field-name');
+
+                textEl.popover({
+                    html: true,
+                    trigger: "manual",
+                    placement: "top",
+                    title:cfh_field_name,
+                    content:function(){
+                        return $(cfh_popover_templates[cfh_field_id]).html();
+                    }
+                }).on("click", function(e){
+                    var $popup = $(this);
+                    $popup.popover("toggle");
+                    var titleField = $("#custom_fields_"+cfh_field_to+"_"+cfh_field_id+"_title");
+                    var urlField = $("#custom_fields_"+cfh_field_to+"_"+cfh_field_id+"_link");
+                    var ttl = $(hiddenField.val()).html();
+                    var cfUrl = $(hiddenField.val()).attr("href");
+                    if(cfUrl){
+                        $('#cf_hyperlink_open_'+cfh_field_id).attr('href',(cfUrl.indexOf('://') === -1 ? 'http://' + cfUrl : cfUrl));
+                    }
+                    titleField.val(ttl);
+                    urlField.val(cfUrl);
+                    $("#custom_fields_"+cfh_field_to+"_"+cfh_field_id+"_btn-save").click(function(){
+                        hiddenField.val((urlField.val() != '' ? '<a href="'+urlField.val()+'" target="_blank">' + (titleField.val() != "" ? titleField.val() : urlField.val()) + '</a>' : ''));
+                        textEl.html(titleField.val() !== ""  ? titleField.val() : (urlField.val() != '' ? urlField.val() :  "Нажмите здесь, чтобы добавить ссылку"));
+                        $popup.popover("toggle");
+                    });
+                    $("#custom_fields_"+cfh_field_to+"_"+cfh_field_id+"_btn-cancel").click(function(){
+                        if(urlField.val() == ''){
+                            hiddenField.val('');
+                        }
+                        $popup.popover("toggle");
+                    });
+                });
+                cfh_wrapper.addClass('cfh-initialized')
+            }
+        });
+       }
+     }
+ </script>
+     <script>
+        if (typeof(jQuery) === 'undefined' && !window.deferAfterjQueryLoaded) {
+            window.deferAfterjQueryLoaded = [];
+            Object.defineProperty(window, "$", {
+                set: function(value) {
+                    window.setTimeout(function() {
+                        $.each(window.deferAfterjQueryLoaded, function(index, fn) {
+                            fn();
+                        });
+                    }, 0);
+                    Object.defineProperty(window, "$", {
+                        value: value
+                    });
+                },
+                configurable: true
+            });
+        }
+
+        var csrfData = {"formatted":{"csrf_token_name":"4bd54bbd1a506c261c9ce8bc016d64a9"},"token_name":"csrf_token_name","hash":"4bd54bbd1a506c261c9ce8bc016d64a9"};
+
+        if (typeof(jQuery) == 'undefined') {
+            window.deferAfterjQueryLoaded.push(function() {
+                csrf_jquery_ajax_setup();
+            });
+            window.addEventListener('load', function() {
+                csrf_jquery_ajax_setup();
+            }, true);
+        } else {
+            csrf_jquery_ajax_setup();
+        }
+
+        function csrf_jquery_ajax_setup() {
+            $.ajaxSetup({
+                data: csrfData.formatted
+            });
+
+            $(document).ajaxError(function(event, request, settings) {
+                if (request.status === 419) {
+                    alert_float('warning', 'Page expired, refresh the page make an action.')
+                }
+            });
+        }
+    </script>
+    <style>
+    #form_submit:hover {
+      background-color: #cc0000 !important;
+    }
+  </style>
+</head>
+<body class="web-to-lead a6a1ef949d958324985478a26b635d67">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 form-col">
+            <div id="response"></div>
+      <form action="https://yonekey.com/forms/wtl/a6a1ef949d958324985478a26b635d67" id="a6a1ef949d958324985478a26b635d67" class="disable-on-submit" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+<input type="hidden" name="csrf_token_name" value="4bd54bbd1a506c261c9ce8bc016d64a9" />                                                                                                                 
+            
+<input type="hidden" name="key" value="a6a1ef949d958324985478a26b635d67" />
+      <div class="row">
+        <div class="col-md-12"><div class="form-group" data-type="text" data-name="name" data-required="1"><label class="control-label" for="name"> <span class="text-danger">* </span> <div>Adyňyz</div></label><input required="true" placeholder="Adyňyzy ýazyň" type="text" name="name" id="name" class="form-control" value=""></div></div><div class="col-md-12"><div class="form-group" data-type="text" data-name="email" data-required="1"><label class="control-label" for="email"> <span class="text-danger">* </span> Email</label><input required="true" placeholder="Email adresiňizi ýazyň" type="email" name="email" id="email" class="form-control" value=""></div></div><div class="col-md-12"><div class="form-group" data-type="text" data-name="phonenumber" data-required="1"><label class="control-label" for="phonenumber"> <span class="text-danger">* </span> <div>El nomeriňiz</div></label><input required="true" placeholder="El nomeriňiz ýazyň" type="text" name="phonenumber" id="phonenumber" class="form-control" value=""></div></div>                    <div class="clearfix"></div>
+      <div class="text-left col-md-12 submit-btn-wrapper">
+        <button
+          class="btn"
+          id="form_submit"
+          type="submit"
+          style="color: #ffffff;background-color: #ea1818;">
+          <i class="fa fa-spinner fa-spin hide" style="margin-right: 2px;"></i>
+          Başlamak isleýän</button>
+      </div>
+    </div>
+
+        </form>  </div>
+</div>
+</div>
+
+    <script>
+       var app = {};
+       app.options = {};
+       app.lang = {};
+       app.options.date_format = 'd.m.Y';
+       app.options.time_format = '24';
+       app.options.calendar_first_day = '0';
+       app.lang.file_exceeds_max_filesize = "Размер файла должен быть меньше, чем 128 MB";
+       app.lang.validation_extension_not_allowed = "Расширение файла не разрешено";
+   </script>
+
+   <script type="text/javascript" id="jquery-js" src="https://yonekey.com/assets/plugins/jquery/jquery.min.js?v=2.9.4"></script>
+<script type="text/javascript" id="bootstrap-js" src="https://yonekey.com/assets/plugins/bootstrap/js/bootstrap.min.js?v=2.9.4"></script>
+<script type="text/javascript" id="jquery-validation-js" src="https://yonekey.com/assets/plugins/jquery-validation/jquery.validate.min.js?v=2.9.4"></script>
+<script type="text/javascript" id="jquery-validation-lang-js" src="https://yonekey.com/assets/plugins/jquery-validation/localization/messages_ru.min.js?v=2.9.4"></script>
+<script type="text/javascript" id="moment-js" src="https://yonekey.com/assets/builds/moment.min.js?v=2.9.4"></script>
+<script type="text/javascript" id="bootstrap-select-js" src="https://yonekey.com/assets/builds/bootstrap-select.min.js?v=2.9.4"></script>
+<script type="text/javascript" id="bootstrap-select-lang-js" src="https://yonekey.com/assets/plugins/bootstrap-select/js/i18n/defaults-ru_RU.min.js?v=2.9.4"></script>
+<script type="text/javascript" id="datetimepicker-js" src="https://yonekey.com/assets/plugins/datetimepicker/jquery.datetimepicker.full.min.js?v=2.9.4"></script>
+<script type="text/javascript" id="colorpicker-js" src="https://yonekey.com/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js?v=2.9.4"></script>
+<script type="text/javascript" id="common-js" src="https://yonekey.com/assets/builds/common.js?v=2.9.4"></script>
+
+   <script>
+    $(function(){
+
+        $('body').tooltip({
+             selector: '[data-toggle="tooltip"]'
+        });
+
+        appColorPicker();
+        appDatepicker();
+        appSelectPicker($('select'));
+    });
+</script>
+<script>
+ var form_id = '#a6a1ef949d958324985478a26b635d67';
+ var form_redirect_url = 'https://bilim.yonekey.com';
+ $(function() {
+   $(form_id).appFormValidator({
+
+    onSubmit: function(form) {
+
+     $("input[type=file]").each(function() {
+      if($(this).val() === "") {
+        $(this).prop('disabled', true);
+      }
+    });
+    $('#form_submit .fa-spin').removeClass('hide'); 
+
+     var formURL = $(form).attr("action");
+     var formData = new FormData($(form)[0]);
+
+     $.ajax({
+       type: $(form).attr('method'),
+       data: formData,
+       mimeType: $(form).attr('enctype'),
+       contentType: false,
+       cache: false,
+       processData: false,
+       url: formURL
+     }).always(function(){
+      $('#form_submit').prop('disabled', false);
+      $('#form_submit .fa-spin').addClass('hide'); 
+    }).done(function(response){
+      response = JSON.parse(response);
+                 if (form_redirect_url !== '0') {
+                    if (window.top) {
+                      window.top.location.href = form_redirect_url;
+                    } else {
+                      window.location.href = form_redirect_url;
+                    }
+                    return;
+                 } else if (response.redirect_url) {
+                 // In case action hook is used to redirect
+                    if (window.top) {
+                      window.top.location.href = response.redirect_url;
+                    } else {
+                      window.location.href = response.redirect_url;
+                    }
+                    return;
+                 }
+                 if (response.success == false) {
+                     $('#recaptcha_response_field').html(response.message); // error message
+                   } else if (response.success == true) {
+                     $(form_id).remove();
+                     $('#response').html('<div class="alert alert-success">'+response.message+'</div>');
+                     $('html,body').animate({
+                       scrollTop: $("#online_payment_form").offset().top
+                     },'slow');
+                   } else {
+                     $('#response').html('Something went wrong...');
+                   }
+                   if (typeof(grecaptcha) != 'undefined') {
+                     grecaptcha.reset();
+                   }
+                 }).fail(function(data){
+                   if (typeof(grecaptcha) != 'undefined') {
+                     grecaptcha.reset();
+                   }
+                   if(data.status == 422) {
+                    $('#response').html('<div class="alert alert-danger">Some fields that are required are not filled properly.</div>');
+                  } else {
+                    $('#response').html(data.responseText);
+                  }
+                });
+                 return false;
+               }
+             });
+ });
+</script>
+</body>
+</html>
